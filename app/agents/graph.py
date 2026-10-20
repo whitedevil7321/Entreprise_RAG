@@ -42,4 +42,4 @@ workflow.add_edge("responder",END)
 checkpointer=MemorySaver()
 
 
-rag_agent=workflow.comple(checkpointer=checkpointer)
+rag_agent=workflow.compile(checkpointer=checkpointer)

@@ -22,10 +22,10 @@ def _get_ranker()-> Ranker:
 def rerank_documents(query:str,documents:list[str],top_n:int=5)-> list[str]:
     if not documents:
         return []
-    start_time=time()
-
-    logfire.log(f"Sending documents of Length: {len(documents)} for Reranking.")
-
+    start_time=time.time()
+    logfire.info(
+        f"Sending documents of Length: {len(documents)} for Reranking."
+    )
     try:
         ranker=_get_ranker()
         passages=[
@@ -38,7 +38,7 @@ def rerank_documents(query:str,documents:list[str],top_n:int=5)-> list[str]:
         reranked_documents=[]
         for res in results[:top_n]:
             reranked_documents.append(res['text'])
-
+        
         duration=time.time()-start_time
         top_score=results[0]['score'] if results else 'N/A'
         logfire.info(f"Reranker Done in {duration:.2f}s. Top Semantic Score: {top_score}")

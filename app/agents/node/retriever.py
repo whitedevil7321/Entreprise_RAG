@@ -21,6 +21,11 @@ def retrieve_node(state:AgentState):
             logfire.info("Reranking complete. kept top 5 most relevant documents")
 
         formatted_documents=[f"CONTENT: {doc}" for doc in ranked_contents]
+        print("DOCUMENT TYPE:", type(formatted_documents))
+        print("FIRST DOCUMENT:", type(formatted_documents[0])
+            if formatted_documents else "EMPTY")
+        print("DOCUMENT SAMPLE:", repr(formatted_documents[0])
+            if formatted_documents else "EMPTY")
     return {
         "documents": formatted_documents,
         "status":f"Found Technical Content",

@@ -65,7 +65,7 @@ def process_file(file_path: str, filename:str,source_type:str):
                 return
 
             # chunk text
-            chunks=chunk_texts(full_text)
+            chunks=[c.strip() for c in chunk_texts(full_text) if c and c.strip()]
             if not chunks:
                 return
 
@@ -127,6 +127,9 @@ def run_universal_ingestion(base_dir:str,explicit_source_type: str=None,wipe:boo
     pass --wipe to drop and recreate the Qdrant collection before ingestion.
     """
     with logfire.span("Universal Ingestion Started", base_directory=base_dir):
+        if wipe and qdrant_client.collection_exists(settings.QDRANT_COLLECTION):
+            qdrant_client.delete_collection(settings.QDRANT_COLLECTION)
+            logfire.info(f"Wiped collection: {settings.QDRANT_COLLECTION}")
         if not qdrant_client.collection_exists(settings.QDRANT_COLLECTION):
             dim=get_embedding_dim()
             qdrant_client.create_collection(
